@@ -7,6 +7,9 @@ using RedirectURLs.ViewModels; // пространство имен моделе
 using RedirectURLs.Models; // пространство имен UserContext и класса User
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace RedirectURLs.Controllers
 {
@@ -85,6 +88,90 @@ namespace RedirectURLs.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");
+        }
+
+        public async Task<IActionResult> ViewLinks()
+        {
+            return View(await db.Links.ToListAsync());
+            
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(Link link)
+        {
+            User user = await db.Users.FirstOrDefaultAsync(
+                u => u.Email == HttpContext.User.Identity.Name);
+            if(user == null) return NotFound();
+            link.ShortLink = Convert.ToString(db.Links.Count(i=> i.ClientId == user.Id)+1, 16);
+            link.ClientId = user.Id;
+            db.Links.Add(link);
+            await db.SaveChangesAsync();
+            return RedirectToAction("ViewLinks");
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id != null)
+            {
+                Link link = await db.Links.FirstOrDefaultAsync(p => p.Id == id);
+                if (link != null)
+                    return View(link);
+            }
+            return NotFound();
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id != null)
+            {
+                Link link = await db.Links.FirstOrDefaultAsync(p => p.Id == id);
+                if (link != null)
+                    return View(link);
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(Link link)
+        {
+            Link _link = await db.Links.FirstOrDefaultAsync(p => p.Id == link.Id);
+            _link.LongLink = link.LongLink;//отсутствовала часть данных в пришедшем объекте,
+            //добавил такой костыть чтоб всё правильно работало
+            db.Links.Update(_link);
+            await db.SaveChangesAsync();
+            return RedirectToAction("ViewLinks");
+        }
+
+        [HttpGet]
+        [ActionName("Delete")]
+        public async Task<IActionResult> ConfirmDelete(int? id)
+        {
+            if (id != null)
+            {
+                Link link = await db.Links.FirstOrDefaultAsync(p => p.Id == id);
+                if (link != null)
+                    return View(link);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id != null)
+            {
+                Link link = await db.Links.FirstOrDefaultAsync(p => p.Id == id);
+                if (link != null)
+                {
+                    db.Links.Remove(link);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("ViewLinks");
+                }
+            }
+            return NotFound();
         }
     }
 }

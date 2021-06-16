@@ -12,10 +12,12 @@ namespace RedirectURLs.Controllers
 {
     public class HomeController : Controller
     {
+        private UserContext db;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserContext context)
         {
+            db = context;
             _logger = logger;
         }
         [Authorize]
