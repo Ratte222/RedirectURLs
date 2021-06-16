@@ -9,10 +9,12 @@ namespace RedirectURLs.Models
     public class UserContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Link> Links { get; set; }
         public UserContext(DbContextOptions<UserContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureDeleted();
+            Database.EnsureCreated();//убедимся что таблици созданы проверится при первом обращении
         }
     }
 }

@@ -1,0 +1,14 @@
+﻿@model RedirectURLs.Models.Link
+@{
+    ViewBag.Title = Model.ShortLink;
+}
+<h2>Идентификатор @Model.Id</h2>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Короткая ссылка</dt>
+        <dd>@Model.ShortLink</dd>
+
+        <dt>Полная ссылка</dt>
+        <dd>@Model.LongLink</dd>
+    </dl>
+</div>
