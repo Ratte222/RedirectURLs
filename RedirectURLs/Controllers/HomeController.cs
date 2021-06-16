@@ -20,10 +20,9 @@ namespace RedirectURLs.Controllers
             db = context;
             _logger = logger;
         }
-        [Authorize]
+        
         public IActionResult Index()
         {
-            //HttpContext.User.Identity.Name
             return View();
         }
 

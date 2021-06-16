@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Редактирование ссылки";
 }
-<form asp-action="edit" asp-controller="Account" asp-route-id="@Model.Id">
+<form asp-action="edit" asp-controller="ManageLink" asp-route-id="@Model.Id">
     <div class="form-group">
         <label asp-for="LongLink" class="control-label">Полная ссылка</label>
         <input type="text" asp-for="LongLink" class="form-control" />

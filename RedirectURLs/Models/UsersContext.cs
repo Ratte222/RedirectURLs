@@ -12,9 +12,8 @@ namespace RedirectURLs.Models
         public DbSet<Link> Links { get; set; }
         public UserContext(DbContextOptions<UserContext> options)
             : base(options)
-        {
-            //Database.EnsureDeleted();
-            Database.EnsureCreated();//убедимся что таблици созданы проверится при первом обращении
+        {            
+            Database.EnsureCreated();
         }
     }
 }

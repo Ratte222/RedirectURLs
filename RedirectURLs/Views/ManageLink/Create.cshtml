@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Добавление ссылки";
 }
-<form asp-action="create" asp-controller="Account">
+<form asp-action="create" asp-controller="ManageLink">
     <div class="form-group">
         <label asp-for="LongLink" class="control-label">Link</label>
         <input type="text" asp-for="LongLink" class="form-control" />
@@ -12,6 +12,6 @@
             <input type="number" asp-for="Age" class="form-control" />
         </div>*@
     <div class="form-group">
-        <input type="submit" value="Отправить" class="btn btn-default" />
+        <input type="submit" value="Добавить" class="btn btn-default" />
     </div>
 </form>
